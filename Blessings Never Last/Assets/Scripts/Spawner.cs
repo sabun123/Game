@@ -18,6 +18,12 @@ public class Spawner : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        // Add this magic code to prevent Unity from monopolizing
+        // the input. Instead, share it with the browser inputs etc
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            WebGLInput.captureAllKeyboardInput = false;
+        #endif
+
         listOfRandomSpawnedObjects = new List<GameObject>();
 
         // Create a new wave of spawnables every timeToNewWave (second) starting in two seconds
@@ -39,7 +45,7 @@ public class Spawner : MonoBehaviour
         {
             float xCoord = GetRandomXCoordinateFromObject();
             float zCoord = GetRandomZCoordinateFromObject();
-            Debug.Log("X " + xCoord + " Z " + zCoord);
+            //Debug.Log("X " + xCoord + " Z " + zCoord);
             GameObject newSpawn = Instantiate(objectToSpawn, new Vector3(xCoord, gameObject.transform.localPosition.y, zCoord), angleToAimAt);
             listOfRandomSpawnedObjects.Add(newSpawn);
         }
